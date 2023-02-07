@@ -16,29 +16,38 @@ function Vote() {
     currentAccount,
   } = useContext(TransactionContext);
 
-  const [htmlTxt, setHtmlTxt] = useState(null);
-  let proposal_address = "https://www.example.com";
+  const [count, setCount] = useState(0);
+  const [htmlTxt, setHtmlTxt] = useState("");
+
+  const [eventAddress, setEventAddress] = useState('');
+  const [showEnable, setShowEnable] = useState(false);
+  const [voteDetail, setVoteDetail] = useState("");
+  let proposal_address = "";
+
+  const { showToast } = useToast()
 
   useEffect(() => {
 
     getEventAddress();
 
-    fetch(proposal_address)
+  }, []);
+
+  useEffect(() => {
+    console.log("get event link 2: ",eventAddress);
+    fetch(eventAddress)
       .then(response => response.text())
       .then(html => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, "text/html");
-        if(doc.body.textContent<1000){
+        const content_size = doc.body.textContent.length;
+        console.log("get doc: ",content_size);
+        if(content_size < 1500){
           setHtmlTxt(doc.body.textContent);
+          // document.getElementById('event_detail').innerHTML = doc.body.textContent;
         }
       });
-  }, []);
+  }, [eventAddress]);
 
-  const [eventAddress, setEventAddress] = useState('');
-  const [showEnable, setShowEnable] = useState(false);
-  const [voteDetail, setVoteDetail] = useState("");
-
-  const { showToast } = useToast()
 
   const handleChange = (e, name) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -76,7 +85,7 @@ function Vote() {
         proposal_address = 
           await creditContract.getCurEventAddress();
 
-        console.log(proposal_address);
+        console.log("get event link 1: ",proposal_address);
         setEventAddress(proposal_address);
       }
     } catch (error) {
@@ -152,6 +161,7 @@ function Vote() {
         <h1 className="font-semibold text-lg text-yellow-200">议案投票</h1>
         <label
           htmlFor="proposal_address"
+          onClick={()=> setCount(count + 1)}
           className="flex flex-col items-start justify-center"
         >
           <p>Proposal Link（议案网址）</p>
@@ -201,7 +211,7 @@ function Vote() {
 
     <div style={{ flex: 1 }} className="flex w-full justify-center items-center">
         <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center ">
-        <p className="font-semibold text-lg text-red-600">{htmlTxt}</p>
+        <p id="event_detail" className="font-semibold text-lg text-red-600">{htmlTxt}</p>
       </div>
     </div>
 
