@@ -1,6 +1,7 @@
 import React, { createContext, useContext,useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import { TransactionContext } from '../context/TransactionContext';
+import { useToast } from "../context/toast_context";
 import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 
 function Spawn() {
@@ -15,6 +16,8 @@ function Spawn() {
 
   const [showEnable, setShowEnable] = useState(false);
   const [spawnDetail, setSpawnDetail] = useState("");
+
+  const { showToast } = useToast();
 
   const handleChange = (e, name) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -44,11 +47,11 @@ function Spawn() {
     return transactionsContract;
   };
 
-  useEffect(() => {
+  useEffect(async () => {
 
     getApplicantName();
 
-  })
+  },[]);
 
   async function getApplicantName() {
     try {
@@ -83,7 +86,12 @@ function Spawn() {
         })
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      showToast({
+        title: 'Contract Error',
+        text: error.error.message,
+        type: 'danger',
+      })
     }
   }
 
@@ -91,11 +99,12 @@ function Spawn() {
     <div className="flex w-full justify-center items-center">
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
       <h1 className="font-semibold text-lg text-yellow-200">Approve New Member</h1>
+      <h1 className="font-semibold text-lg text-yellow-200">新会员入会投票</h1>
         <label
           htmlFor="member_name"
           className="flex flex-col items-start justify-center"
         >
-          <p>Applying Member Name</p>
+          <p>Applying Member Name（申请会员名字）</p>
         </label>
         <input
           rereadonly={"true"}

@@ -2,7 +2,7 @@ import abiCredit from './DaoCredit.json';
 import abiNft from './DaoNft.json';
 
 export const creditABI = abiCredit.abi;
-export const creditAddress = '0x6589aEACa60E7b18E173B5EF655B05891e387979';
+export const creditAddress = '0xE44377Ae53d6025e6Dad50ADbb1D4c643868B701';
 
 export const nftABI = abiNft.abi;
-export const nftAddress = '0xB6A45844d5B9d5E08a080fB88FeE5ad353acED85';
+export const nftAddress = '0xAE330e5d59c64E477DbC3DA82B9F4dBD5D4DaE5f';

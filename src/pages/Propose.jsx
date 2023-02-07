@@ -3,8 +3,6 @@ import { ethers } from 'ethers';
 import { TransactionContext } from '../context/TransactionContext';
 import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 
-// Components
-
 
 function Propose() {
   const [input, setInput] = useState({
@@ -80,11 +78,12 @@ function Propose() {
     <div className="flex w-full justify-center items-center">
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
         <h1 className="font-semibold text-lg text-yellow-200">Abi Propose Simple</h1>
+        <h1 className="font-semibold text-lg text-yellow-200">发起简易议案</h1>
         <label
           htmlFor="proposal_address"
           className="flex flex-col items-start justify-center"
         >
-          <p>Proposal Link</p>
+          <p>Proposal Link（议案网址）</p>
         </label>
         <input
           onChange={handleChange}

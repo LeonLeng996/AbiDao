@@ -1,7 +1,7 @@
 import React, { createContext, useContext,useState, useEffect } from "react";
 import { ethers } from 'ethers';
-import { ToastContainer, toast } from 'react-toastify';
-// import "react-toastify/dist/ReactToastify.css"
+import { useToast } from "../context/toast_context";
+
 import { TransactionContext } from '../context/TransactionContext';
 import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 
@@ -18,6 +18,8 @@ function ApplyNft() {
   const {
     currentAccount,
   } = useContext(TransactionContext);
+
+  const { showToast } = useToast();
 
   const handleChange = (e, name) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -70,8 +72,11 @@ function ApplyNft() {
     }
 
     if(!input.member_name){
-      toast.error("member name can not be empty");
-      console.log("member name can not be empty");
+      showToast({
+        text: "member name can not be empty",
+        type: 'warning',
+        autohide: true,
+      })
       return;
     }
 
@@ -91,14 +96,20 @@ function ApplyNft() {
         // checkMember();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      showToast({
+        title: 'Contract Error',
+        text: "applyNft not work",
+        type: 'danger',
+      })
     }
   }
 
   return (
     <div className="flex w-full justify-center items-center">
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-      <h1 className="font-semibold text-lg text-yellow-200">Abi Member Apply</h1>
+      <h1 className="font-semibold text-lg text-yellow-200">Apply For New Member</h1>
+      <h1 className="font-semibold text-lg text-yellow-200">新会员入会申请</h1>
       <label
           htmlFor="member_account"
           className="flex flex-col items-start justify-center"
@@ -117,7 +128,7 @@ function ApplyNft() {
           htmlFor="member_name"
           className="flex flex-col items-start justify-center"
         >
-          <p>Apply Member Name</p>
+          <p>Apply Member Name（会员名字）</p>
         </label>
         <input
           onChange={handleChange}

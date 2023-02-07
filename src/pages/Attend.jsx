@@ -1,12 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { ethers } from 'ethers';
 import { TransactionContext } from '../context/TransactionContext';
+import { useToast } from '../context/toast_context';
 import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 
 // Components
 
 
 function Attend() {
+  const { showToast } = useToast()
+
   const [input, setInput] = useState({
     member_account: "",
     event_code: 0,
@@ -65,7 +68,12 @@ function Attend() {
 
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      showToast({
+        title: 'Contract Error',
+        text: error.error.message,
+        type: 'danger',
+      })
     }
   };
 
@@ -73,11 +81,12 @@ function Attend() {
     <div className="flex w-full justify-center items-center">
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
         <h1 className="font-semibold text-lg text-yellow-200">Abi Attending Event</h1>
+        <h1 className="font-semibold text-lg text-yellow-200">参与活动激励</h1>
         <label
           htmlFor="event_code"
           className="flex flex-col items-start justify-center"
         >
-          <p>Event Code</p>
+          <p>Event Code（活动密码）</p>
         </label>
         <input
           onChange={handleChange}

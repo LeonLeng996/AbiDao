@@ -1,8 +1,10 @@
 import React, { createContext, useContext,useState, useEffect } from "react";
-import { ethers } from 'ethers';
-import { TransactionContext } from '../context/TransactionContext';
-import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 import axios from 'axios';  
+import { ethers } from 'ethers';
+
+import { TransactionContext } from '../context/TransactionContext';
+import { useToast } from "../context/toast_context";
+import { creditABI, creditAddress, nftABI, nftAddress } from '../utils/constants';
 
 // Components
 
@@ -12,14 +14,12 @@ function Grant() {
     member_account: "",
     member_name: "",
   });
-
+  const [value, setValue] = useState('');
+  const [nextImage, setNextImage] = useState(''); 
+  const { showToast } = useToast();
   const {
     currentAccount,
   } = useContext(TransactionContext);
-
-  const [value, setValue] = useState('');
-
-  const [nextImage, setNextImage] = useState('');
 
   const handleChange = (e, name) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -49,9 +49,9 @@ function Grant() {
     return transactionsContract;
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     getNextTokenURI();
-  })
+  },[]);
 
   async function getNextTokenURI() {
     try {
@@ -61,20 +61,26 @@ function Grant() {
         let tokenURI =
           await nftContract.getNextTokenURI();
 
-        tokenURI = "https://gateway.pinata.cloud/ipfs/"+tokenURI.substr(7);
-        // console.log(tokenURI);
+        // tokenURI = "https://gateway.pinata.cloud/ipfs/"+tokenURI.substr(7);
+        console.log(tokenURI);
 
         axios.get(tokenURI).then((res)=>{
           console.log(res.data.image);
-          tokenURI = "https://gateway.pinata.cloud/ipfs/"+res.data.image.substr(7);
-          setNextImage(tokenURI);
+          let imageURI = res.data.image;
+          console.log(imageURI);
+          setNextImage(imageURI);
 
         }).catch((err) => {
           console.log(err);
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      showToast({
+        title: 'Contract Error',
+        text: "getNextTokenURI not work",
+        type: 'danger',
+      })
     }
   }
 
@@ -90,18 +96,24 @@ function Grant() {
     try {
       if (typeof window.ethereum !== 'undefined') {
         const nftContract = createNftContract();
-        let transRx = await nftContract.mintOneNew(input.member_account, input.member_name);4
+        let transRx = await nftContract.mintOneNew(input.member_account, input.member_name);
 
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      showToast({
+        title: 'Contract Error',
+        text: error.error.message,
+        type: 'danger',
+      })
     }
   };
 
   return (
     <div className="flex w-full justify-center items-center">
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
-        <h1 className="font-semibold text-lg text-yellow-200">Abi Genesis Member Granted</h1>
+        <h1 className="font-semibold text-lg text-yellow-200">Genesis Granted</h1>
+        <h1 className="font-semibold text-lg text-yellow-200">领取创世会员，仅限获批成员</h1>
         <img src={nextImage} alt=""  />
         <label
           htmlFor="member_account"
@@ -122,7 +134,7 @@ function Grant() {
           htmlFor="member_name"
           className="flex flex-col items-start justify-center"
         >
-          <p>Member Name</p>
+          <p>Member Name（会员名字）</p>
         </label>
         <input
           onChange={handleChange}
