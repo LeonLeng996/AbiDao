@@ -29,7 +29,8 @@ function Vote() {
   useEffect(() => {
 
     getEventAddress();
-
+    
+    getVoteMajority();
   }, []);
 
   useEffect(() => {
@@ -98,7 +99,27 @@ function Vote() {
       })
     }
   }
+  async function getVoteMajority() {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        const creditContract = createCreditContract();
 
+        const vote_majority = 
+          await creditContract.getVoteMajority();
+
+        console.log(vote_majority);
+
+      }
+    } catch (error) {
+      console.error(error);
+
+      showToast({
+        title: 'Majority Error',
+        text: error.error.message,
+        type: 'danger',
+      })
+    }
+  }
   async function Vote_Agree() {
     if (!input) return
 
