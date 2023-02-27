@@ -42,7 +42,7 @@ function Navbar() {
         </h1>
         <div>
           <nav className="flex items-center space-x-10 text-sm">
-            <li><Link to="http://whitepaper.abidao.xyz/" className="text-gray-400 hover:text-gray-100">WhitePaper</Link></li>          
+            <li><a href="http://whitepaper.abidao.xyz/" className="text-gray-400 hover:text-gray-100">WhitePaper</a></li>          
             <li><NavLink to="/Grant" className="text-gray-400 hover:text-gray-100">Grant</NavLink></li>
             <li><NavLink to="/ApplyNft" className="text-gray-400 hover:text-gray-100">ApplyNft</NavLink></li>
             <li><NavLink to="/Spawn" className="text-gray-400 hover:text-gray-100">Spawn</NavLink></li>
