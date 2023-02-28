@@ -13,6 +13,7 @@ function Spawn() {
   });
 
   const [applicantName, setApplicantName] = useState('');
+  const [applicantAddress, setApplicantAddress] = useState('');
 
   const [showEnable, setShowEnable] = useState(false);
   const [spawnDetail, setSpawnDetail] = useState("");
@@ -51,6 +52,8 @@ function Spawn() {
 
     getApplicantName();
 
+    getApplicantAddress();
+
   },[]);
 
   async function getApplicantName() {
@@ -61,8 +64,24 @@ function Spawn() {
         const applicant_name =
           await nftContract.getCurApplicantName(1);
 
-        console.log(applicant_name);
+        console.log("check applicant Name:"+applicant_name);
         setApplicantName(applicant_name);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getApplicantAddress() {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        const nftContract = createNftContract();
+
+        const applicant_address =
+          await nftContract.getCurApplicantAddress(1);
+
+        console.log("check applicant address:"+applicant_address);
+        setApplicantAddress(applicant_address);
       }
     } catch (error) {
       console.log(error);
@@ -77,7 +96,9 @@ function Spawn() {
     try {
       if (typeof window.ethereum !== 'undefined') {
         const nftContract = createNftContract();
-        const seccode = await nftContract.spawn();
+        const seccode = await nftContract.spawnMulti(applicantAddress);
+
+        console.log("spawnMulti:"+applicant_address);
 
         nftContract.on('SpawnAgree', function(event, agreenum){
           console.log(agreenum); 
@@ -110,8 +131,22 @@ function Spawn() {
           rereadonly={"true"}
           disabled="disabled" 
           value = {applicantName}
-          id="member_name"
-          name="member_name"
+          id="applicant_name"
+          name="applicant_name"
+          className="my-2 w-half justify-leftborder border-gray-200 p-2 rounded-xl focus-visible:border-[#73c000]"
+        />
+        <label
+          htmlFor="member_address"
+          className="flex flex-col items-start justify-center"
+        >
+          <p>Address（地址）</p>
+        </label>
+        <input
+          rereadonly={"true"}
+          disabled="disabled" 
+          value = {applicantAddress}
+          id="applicant_address"
+          name="applicant_address"
           className="my-2 w-half border border-gray-200 p-2 rounded-xl focus-visible:border-[#73c000]"
         />
         <button onClick={SpawnMember} className="p-3 px-10 text-white rounded-xl bg-[#73ca67] font-bold">
