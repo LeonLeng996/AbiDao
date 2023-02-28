@@ -5,4 +5,4 @@ export const creditABI = abiCredit.abi;
 export const creditAddress = '0xE44377Ae53d6025e6Dad50ADbb1D4c643868B701';
 
 export const nftABI = abiNft.abi;
-export const nftAddress = '0xD512781309402250571b2e4cAa58f2db33d7691E';
+export const nftAddress = '0x6F0a64acf3157a5772A256DCcB22B435a3F899D3';
