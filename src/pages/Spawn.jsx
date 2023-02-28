@@ -59,7 +59,7 @@ function Spawn() {
         const nftContract = createNftContract();
 
         const applicant_name =
-          await nftContract.getCurApplicantName(0);
+          await nftContract.getCurApplicantName(1);
 
         console.log(applicant_name);
         setApplicantName(applicant_name);
