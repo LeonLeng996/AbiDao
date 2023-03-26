@@ -72,11 +72,7 @@ function ApplyNft() {
     }
 
     if(!input.member_name){
-      showToast({
-        text: "member name can not be empty",
-        type: 'warning',
-        autohide: true,
-      })
+      window.alert("member name can not be empty");
       return;
     }
 
@@ -97,11 +93,7 @@ function ApplyNft() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: "applyNft not work",
-        type: 'danger',
-      })
+      window.alert(error);
     }
   }
 

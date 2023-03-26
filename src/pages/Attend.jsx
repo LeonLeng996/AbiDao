@@ -69,11 +69,7 @@ function Attend() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   };
 

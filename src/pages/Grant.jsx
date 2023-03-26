@@ -76,11 +76,7 @@ function Grant() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: "getNextTokenURI not work",
-        type: 'danger',
-      })
+      window.alert(error);
     }
   }
 
@@ -101,11 +97,7 @@ function Grant() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   };
 

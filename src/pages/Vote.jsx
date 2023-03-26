@@ -92,11 +92,7 @@ function Vote() {
     } catch (error) {
       console.error(error);
 
-      showToast({
-        title: 'Contract Error',
-        text: error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   }
   async function getVoteMajority() {
@@ -113,11 +109,7 @@ function Vote() {
     } catch (error) {
       console.error(error);
 
-      showToast({
-        title: 'Majority Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   }
   async function Vote_Agree() {
@@ -139,11 +131,7 @@ function Vote() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   };
 
@@ -166,11 +154,7 @@ function Vote() {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   };
 

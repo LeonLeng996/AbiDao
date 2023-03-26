@@ -58,7 +58,10 @@ const Home = () => {
     try {
       if (typeof window.ethereum !== 'undefined') {
         const nftContract = createNftContract();
-        console.log(currentAccount);
+        console.log("account "+currentAccount);
+        if(currentAccount=='')
+          return;
+
         let tokenIndex =
           await nftContract.getMemberTokenId(currentAccount);
         let tokenURI = "https://shdw-drive.genesysgo.net/GvvQqUbKXtR5dgWTdrz45Ab54kAfzePaC3BUf2VF7Fo8/";
@@ -80,11 +83,7 @@ const Home = () => {
       }
     } catch (error) {
       console.error(error);
-      showToast({
-        title: 'Contract Error',
-        text: error.error.message,
-        type: 'danger',
-      })
+      window.alert(error);
     }
   }
 
